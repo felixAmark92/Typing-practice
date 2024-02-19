@@ -1,0 +1,27 @@
+*{
+
+    
+}
+
+.success {
+
+    color: #10ee65;
+}
+.failure {
+
+    background-color: rgba(255, 0, 0, 0.3);
+}
+
+.current {
+    text-decoration: underline;
+}
+
+.textbox {
+    border: solid rgba(0, 0, 0, 0.3) 1px;
+    border-radius: 12px;
+    background-color: #f4f5cc;
+    padding: 1rem;
+    font-size: large;
+    font-family: "Lucida Console", ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+    line-height: 2rem;
+}
