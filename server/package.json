@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "express": "^4.18.2",
-    "mongodb": "6.3"
-  }
+    "mongodb": "6.3",
+    "openai": "^4.28.0"
+  },
+  "type": "module"
 }

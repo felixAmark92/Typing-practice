@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import unvalidKey from "../lib/unvalidKey";
 
 const TypingBox = () => {
   const [curCharId, setCurrentCharId] = useState(0);
@@ -8,8 +9,9 @@ const TypingBox = () => {
   useEffect(() => {
     const handleKeyDownEvent = (event: KeyboardEvent) => {
       const key: string = event.key;
+      console.log("key:", key);
 
-      if (key === "Shift") {
+      if (unvalidKey(key)) {
         return;
       }
 
@@ -17,8 +19,6 @@ const TypingBox = () => {
       if (curChar == null) {
         return;
       }
-
-      console.log("key:", key);
 
       if (key == "Backspace") {
         curChar.classList.remove("current");
@@ -54,9 +54,9 @@ const TypingBox = () => {
   useEffect(() => {
     const getQuote = async () => {
       try {
-        const response = await fetch("http://localhost:3000");
-        const data = await response.json();
-        setText(data.quote.split(""));
+        const response = await fetch("http://localhost:3000/chatgtp");
+        const data = await response.text();
+        setText(data.split(""));
       } catch (error) {
         console.error("Error fetching quote:", error);
       }
