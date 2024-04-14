@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 
 //OpenAi
 const openai = new OpenAI({
-  apiKey: "api-key",
+  apiKey: "not for github",
 });
 
 //MongoDb
@@ -43,7 +43,8 @@ app.get("/chatgtp", async (req, res) => {
     messages: [
       {
         role: "system",
-        content: "a short paragraph. language = svenska; text style = reklam",
+        content:
+          "text = a short paragraph; language = english; style = kindergarden;",
       },
     ],
     model: "gpt-3.5-turbo",

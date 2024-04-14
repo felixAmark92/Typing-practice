@@ -7,7 +7,11 @@ let App = () => {
 
   return (
     <>
-      <TypingBox />
+      <TypingBox
+        onIsDone={() => {
+          console.log("you are done fucker!");
+        }}
+      />
     </>
   );
 };

@@ -1,13 +1,29 @@
 import { useEffect, useState } from "react";
 import unvalidKey from "../lib/unvalidKey";
 
-const TypingBox = () => {
-  const [curCharId, setCurrentCharId] = useState(0);
+interface Props {
+  onIsDone: () => void;
+}
 
+const TypingBox = ({ onIsDone }: Props) => {
+  const [curCharId, setCurrentCharId] = useState(0);
+  const [words, setWords] = useState("".split(""));
   const [text, setText] = useState("".split(""));
+  const [isDone, setIsDone] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [minuteDecimal, setMinuteDecimal] = useState(0);
+  const [start, setStart] = useState(Date.now());
+
+  const getTime = () => {
+    const time = Date.now() - start;
+    setMinuteDecimal(Math.floor(time) / 1000 / 60);
+  };
 
   useEffect(() => {
     const handleKeyDownEvent = (event: KeyboardEvent) => {
+      if (isDone) {
+        return;
+      }
       const key: string = event.key;
       console.log("key:", key);
 
@@ -39,9 +55,22 @@ const TypingBox = () => {
 
       curChar.classList.remove("current");
 
+      if (curCharId === text.length - 1) {
+        setIsDone(true);
+        getTime();
+
+        onIsDone();
+        return;
+      }
+
       const nextChar = document.getElementById((curCharId + 1).toString());
       nextChar?.classList.add("current");
       setCurrentCharId(curCharId + 1);
+
+      if (!hasStarted) {
+        setStart(Date.now());
+        setHasStarted(true);
+      }
     };
 
     document.addEventListener("keydown", handleKeyDownEvent);
@@ -57,6 +86,7 @@ const TypingBox = () => {
         const response = await fetch("http://localhost:3000/chatgtp");
         const data = await response.text();
         setText(data.split(""));
+        setWords(data.split(" "));
       } catch (error) {
         console.error("Error fetching quote:", error);
       }
@@ -68,14 +98,16 @@ const TypingBox = () => {
   }, []);
 
   return (
-    <div className="textbox">
-      {text.map((char, i) => (
-        <span key={i} id={i.toString()}>
-          {char}
-        </span>
-      ))}
-      <br />
-    </div>
+    <>
+      <div className="textbox">
+        {text.map((char, i) => (
+          <span key={i} id={i.toString()}>
+            {char}
+          </span>
+        ))}
+      </div>
+      {isDone ? <p>WPM: {words.length / minuteDecimal}</p> : <p>Test</p>}
+    </>
   );
 };
 
