@@ -4,9 +4,7 @@ import express from "express";
 import bodyParser from "body-parser";
 
 //OpenAi
-const openai = new OpenAI({
-  apiKey: "not for github",
-});
+const openai = new OpenAI();
 
 //MongoDb
 const uri = "mongodb://localhost:27017";
@@ -38,13 +36,12 @@ app.get("/", async (req, res) => {
   res.send(result[0]);
 });
 
-app.get("/chatgtp", async (req, res) => {
+app.post("/chatgtp", async (req, res) => {
   const prompt = await openai.chat.completions.create({
     messages: [
       {
         role: "system",
-        content:
-          "text = a short paragraph; language = english; style = kindergarden;",
+        content: `text = ${req.body.text}; language = ${req.body.language}; style = ${req.body.style}; length = ${req.body.length};`,
       },
     ],
     model: "gpt-3.5-turbo",

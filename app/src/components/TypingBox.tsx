@@ -1,18 +1,40 @@
-import { useEffect, useState } from "react";
+import { Component, useEffect, useState } from "react";
 import unvalidKey from "../lib/unvalidKey";
 
 interface Props {
+  quote: string;
   onIsDone: () => void;
 }
 
-const TypingBox = ({ onIsDone }: Props) => {
+const TypingBox = ({ onIsDone, quote }: Props) => {
   const [curCharId, setCurrentCharId] = useState(0);
-  const [words, setWords] = useState("".split(""));
-  const [text, setText] = useState("".split(""));
+  const [words, setWords] = useState(quote.split(" "));
+  const [text, setText] = useState(quote.split(""));
   const [isDone, setIsDone] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [minuteDecimal, setMinuteDecimal] = useState(0);
   const [start, setStart] = useState(Date.now());
+
+  useEffect(() => {
+    setCurrentCharId(0);
+    setWords(quote.split(" "));
+    setText(quote.split(""));
+    setIsDone(false);
+    setHasStarted(false);
+    setMinuteDecimal(0);
+    setStart(Date.now());
+
+    for (let i = 0; i < text.length; i++) {
+      const char = document.getElementById(i.toString());
+      char?.classList.remove("success");
+      char?.classList.remove("failure");
+      char?.classList.remove("current");
+    }
+    const first = document.getElementById((0).toString());
+    first?.classList.add("currenth");
+
+    return;
+  }, [quote]);
 
   const getTime = () => {
     const time = Date.now() - start;
@@ -79,23 +101,6 @@ const TypingBox = ({ onIsDone }: Props) => {
       document.removeEventListener("keydown", handleKeyDownEvent);
     };
   });
-
-  useEffect(() => {
-    const getQuote = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/chatgtp");
-        const data = await response.text();
-        setText(data.split(""));
-        setWords(data.split(" "));
-      } catch (error) {
-        console.error("Error fetching quote:", error);
-      }
-    };
-
-    return () => {
-      getQuote();
-    };
-  }, []);
 
   return (
     <>
