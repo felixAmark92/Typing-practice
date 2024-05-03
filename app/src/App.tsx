@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import TypingBox from "./components/TypingBox";
 import "./styles/typing-box.css";
+import "./index.css";
 import PromptForm from "./components/PromptForm";
 
 let App = () => {
-  const [quote, setQuote] = useState("hueheu");
+  const [quote, setQuote] = useState("");
 
   const getNewQuote = async (req: PromptRequest) => {
     try {
+      setQuote("");
       const response = await fetch("http://localhost:3000/chatgtp", {
         method: "POST",
         headers: {
