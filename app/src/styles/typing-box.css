@@ -5,7 +5,7 @@
 
 .success {
 
-    color: #10ee65;
+    color: #0ab84c;
 }
 .failure {
 
@@ -17,11 +17,19 @@
 }
 
 .textbox {
-    border: solid rgba(0, 0, 0, 0.3) 1px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
     border-radius: 12px;
-    background-color: #f4f5cc;
+    
     padding: 1rem;
     font-size: large;
     font-family: "Lucida Console", ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
     line-height: 2rem;
+}
+
+.textbox-selected {
+    background-color: #f5f5dd;
+}
+
+.textbox-unselected {
+    background-color: #ddddc6;
 }

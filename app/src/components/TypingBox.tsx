@@ -1,12 +1,15 @@
 import { Component, useEffect, useState } from "react";
+import { useClickAway } from "@uidotdev/usehooks";
 import unvalidKey from "../lib/unvalidKey";
 
 interface Props {
   quote: string;
-  onIsDone: () => void;
+  isSelected: boolean;
+  setIsSelected: (value: boolean) => void;
+  onIsDone: (result: number) => void;
 }
 
-const TypingBox = ({ onIsDone, quote }: Props) => {
+const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
   const [curCharId, setCurrentCharId] = useState(0);
   const [words, setWords] = useState(quote.split(" "));
   const [text, setText] = useState(quote.split(""));
@@ -14,6 +17,24 @@ const TypingBox = ({ onIsDone, quote }: Props) => {
   const [hasStarted, setHasStarted] = useState(false);
   const [minuteDecimal, setMinuteDecimal] = useState(0);
   const [start, setStart] = useState(Date.now());
+
+  useEffect(() => {
+    const textbox = document.getElementById("textbox");
+
+    if (isSelected) {
+      textbox?.classList.remove("textbox-unselected");
+      textbox?.classList.add("textbox-selected");
+    } else {
+      textbox?.classList.remove("textbox-selected");
+      textbox?.classList.add("textbox-unselected");
+    }
+
+    return;
+  }, [isSelected]);
+
+  const ref = useClickAway(() => {
+    setIsSelected(false);
+  });
 
   useEffect(() => {
     setCurrentCharId(0);
@@ -43,7 +64,7 @@ const TypingBox = ({ onIsDone, quote }: Props) => {
 
   useEffect(() => {
     const handleKeyDownEvent = (event: KeyboardEvent) => {
-      if (isDone) {
+      if (isDone || !isSelected) {
         return;
       }
       const key: string = event.key;
@@ -103,16 +124,27 @@ const TypingBox = ({ onIsDone, quote }: Props) => {
   });
 
   return (
-    <>
-      <div className="textbox">
-        {text.map((char, i) => (
+    <div
+      id="textbox"
+      ref={ref}
+      className="textbox"
+      onClick={() => setIsSelected(true)}
+    >
+      {quote ? (
+        text.map((char, i) => (
           <span key={i} id={i.toString()}>
             {char}
           </span>
-        ))}
-      </div>
-      {isDone ? <p>WPM: {words.length / minuteDecimal}</p> : <p>Test</p>}
-    </>
+        ))
+      ) : (
+        <div className="flex space-x-2 justify-center items-center h-20 ">
+          <span className="sr-only">Loading...</span>
+          <div className="h-8 w-8 bg-stone-400 rounded-full animate-bounce [animation-delay:-0.2s]"></div>
+          <div className="h-8 w-8 bg-stone-400 rounded-full animate-bounce [animation-delay:-0.1s]"></div>
+          <div className="h-8 w-8 bg-stone-400 rounded-full animate-bounce"></div>
+        </div>
+      )}
+    </div>
   );
 };
 
