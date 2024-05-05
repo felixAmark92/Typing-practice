@@ -11,7 +11,7 @@ const Stats = ({ result }: Props) => {
     <div className="sm:flex sm:space-x-4">
       <Stat text="WPM" data={result.wpm} />
       <ErrorStat text="Errors" data={result.errors} />
-      <Stat text="More stuff" data="-" />
+      <Stat text="Score" data={result.finalScore} />
     </div>
   );
 };

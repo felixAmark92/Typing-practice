@@ -10,11 +10,15 @@ const App = () => {
   const [quote, setQuote] = useState("This is a basic text");
   const [isSelected, setIsSelected] = useState(false);
   const [disableGenerateBtn, setDisableGenerateBtn] = useState(false);
-  const [result, setResult] = useState<TypingResult>({ wpm: "-", errors: "-" });
+  const [result, setResult] = useState<TypingResult>({
+    wpm: "-",
+    errors: "-",
+    finalScore: "-",
+  });
 
   const getNewQuote = async (req: PromptRequest) => {
     try {
-      setResult({ wpm: "-", errors: "-" });
+      setResult({ wpm: "-", errors: "-", finalScore: "-" });
       setQuote("");
       setDisableGenerateBtn(true);
       const response = await fetch("http://localhost:3000/chatgtp", {

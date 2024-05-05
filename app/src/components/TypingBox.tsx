@@ -68,9 +68,14 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
   useEffect(() => {
     if (isDone) {
       const wpm = words.length / minuteDecimal;
+      const penalty = text.length - errors * 2;
+
+      const score = penalty <= 0 ? 0 : wpm * (penalty / text.length);
+
       const result: TypingResult = {
         wpm: wpm.toFixed(2),
         errors: errors.toString(),
+        finalScore: score.toFixed(2),
       };
       onIsDone(result);
     }
