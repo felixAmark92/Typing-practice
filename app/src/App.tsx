@@ -4,14 +4,17 @@ import "./styles/typing-box.css";
 import "./index.css";
 import PromptForm from "./components/PromptForm";
 import Navbar from "./components/Navbar";
+import Stats from "./components/stats";
 
 const App = () => {
   const [quote, setQuote] = useState("This is a basic text");
   const [isSelected, setIsSelected] = useState(false);
   const [disableGenerateBtn, setDisableGenerateBtn] = useState(false);
+  const [result, setResult] = useState<TypingResult>({ wpm: "-", errors: "-" });
 
   const getNewQuote = async (req: PromptRequest) => {
     try {
+      setResult({ wpm: "-", errors: "-" });
       setQuote("");
       setDisableGenerateBtn(true);
       const response = await fetch("http://localhost:3000/chatgtp", {
@@ -44,12 +47,13 @@ const App = () => {
 
         <div className="col-span-3 bg-gray-200 h-5/6">
           <div className="mx-auto w-2/3 mt-20">
+            <Stats result={result} />
             <TypingBox
               isSelected={isSelected}
               setIsSelected={(value) => setIsSelected(value)}
               quote={quote}
-              onIsDone={() => {
-                console.log("you are done fucker!");
+              onIsDone={(result) => {
+                setResult(result);
               }}
             />
           </div>

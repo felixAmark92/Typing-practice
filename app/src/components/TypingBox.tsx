@@ -6,7 +6,7 @@ interface Props {
   quote: string;
   isSelected: boolean;
   setIsSelected: (value: boolean) => void;
-  onIsDone: (result: number) => void;
+  onIsDone: (result: TypingResult) => void;
 }
 
 const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
@@ -17,6 +17,8 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
   const [hasStarted, setHasStarted] = useState(false);
   const [minuteDecimal, setMinuteDecimal] = useState(0);
   const [start, setStart] = useState(Date.now());
+
+  const [errors, setErrors] = useState(0);
 
   useEffect(() => {
     const textbox = document.getElementById("textbox");
@@ -44,6 +46,7 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
     setHasStarted(false);
     setMinuteDecimal(0);
     setStart(Date.now());
+    setErrors(0);
 
     for (let i = 0; i < text.length; i++) {
       const char = document.getElementById(i.toString());
@@ -61,6 +64,19 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
     const time = Date.now() - start;
     setMinuteDecimal(Math.floor(time) / 1000 / 60);
   };
+
+  useEffect(() => {
+    if (isDone) {
+      const wpm = words.length / minuteDecimal;
+      const result: TypingResult = {
+        wpm: wpm.toFixed(2),
+        errors: errors.toString(),
+      };
+      onIsDone(result);
+    }
+
+    return;
+  }, [isDone]);
 
   useEffect(() => {
     const handleKeyDownEvent = (event: KeyboardEvent) => {
@@ -83,8 +99,14 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
         curChar.classList.remove("current");
         const prevChar = document.getElementById((curCharId - 1).toString());
         prevChar?.classList.add("current");
-        prevChar?.classList.remove("success");
-        prevChar?.classList.remove("failure");
+
+        if (prevChar?.classList.contains("failure")) {
+          prevChar?.classList.remove("failure");
+          setErrors(errors - 1);
+        } else {
+          prevChar?.classList.remove("success");
+        }
+
         setCurrentCharId(curCharId - 1);
 
         return;
@@ -94,6 +116,7 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
         curChar.classList.add("success");
       } else {
         curChar.classList.add("failure");
+        setErrors(errors + 1);
       }
 
       curChar.classList.remove("current");
@@ -101,8 +124,6 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
       if (curCharId === text.length - 1) {
         setIsDone(true);
         getTime();
-
-        onIsDone();
         return;
       }
 

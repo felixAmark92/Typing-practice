@@ -1,3 +1,4 @@
+import { ChangeEvent, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 interface Props {
@@ -8,11 +9,16 @@ interface Props {
 const PromptForm = ({ sendRequest, disableGenerateBtn }: Props) => {
   const { register, handleSubmit } = useForm();
 
+  const [text, setText] = useState("Random text");
+  const [language, setLanguage] = useState("English");
+  const [style, setStyle] = useState("Regular");
+  const [length, setLength] = useState("20 words");
+
   const submit = (data: FieldValues) => {
     const req: PromptRequest = {
       text: data.text,
       language: data.language,
-      style: data.style,
+      difficulty: data.style,
       length: data.length,
     };
 
@@ -32,9 +38,12 @@ const PromptForm = ({ sendRequest, disableGenerateBtn }: Props) => {
           Text
         </label>
         <input
+          type="text"
           {...register("text")}
           id="text"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+          value={text}
+          onChange={(event) => setText(event.target.value)}
         ></input>
         <label className="block text-gray-700 text-sm font-bold mb-2">
           Language
@@ -43,14 +52,18 @@ const PromptForm = ({ sendRequest, disableGenerateBtn }: Props) => {
           {...register("language")}
           id="language"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+          value={language}
+          onChange={(event) => setLanguage(event.target.value)}
         ></input>
         <label className="block text-gray-700 text-sm font-bold mb-2">
-          Style
+          Difficulty
         </label>
         <input
           {...register("style")}
           id="style"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+          value={style}
+          onChange={(event) => setStyle(event.target.value)}
         ></input>
         <label className="block text-gray-700 text-sm font-bold mb-2">
           Length
@@ -59,6 +72,8 @@ const PromptForm = ({ sendRequest, disableGenerateBtn }: Props) => {
           {...register("length")}
           id="length"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+          value={length}
+          onChange={(event) => setLength(event.target.value)}
         ></input>
         <button
           disabled={disableGenerateBtn}

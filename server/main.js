@@ -6,13 +6,13 @@ import bodyParser from "body-parser";
 //OpenAi
 const openai = new OpenAI();
 
-//MongoDb
-const uri = "mongodb://localhost:27017";
+// //MongoDb
+// const uri = "mongodb://localhost:27017";
 
-const client = new MongoClient(uri);
+// const client = new MongoClient(uri);
 
-const database = client.db("typing-practice");
-const quotes = database.collection("quotes");
+// const database = client.db("typing-practice");
+// const quotes = database.collection("quotes");
 
 //Server
 const app = express();
@@ -29,19 +29,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", async (req, res) => {
-  const result = await quotes.aggregate([{ $sample: { size: 1 } }]).toArray();
-  console.log(result);
+// app.get("/", async (req, res) => {
+//   const result = await quotes.aggregate([{ $sample: { size: 1 } }]).toArray();
+//   console.log(result);
 
-  res.send(result[0]);
-});
+//   res.send(result[0]);
+// });
 
 app.post("/chatgtp", async (req, res) => {
   const prompt = await openai.chat.completions.create({
     messages: [
       {
         role: "system",
-        content: `text = ${req.body.text}; language = ${req.body.language}; style = ${req.body.style}; length = ${req.body.length};`,
+        content: `text = ${req.body.text}; language = ${req.body.language}; text difficulty = ${req.body.style}; text length = ${req.body.length};`,
       },
     ],
     model: "gpt-3.5-turbo",
@@ -52,10 +52,10 @@ app.post("/chatgtp", async (req, res) => {
   res.send(prompt.choices[0].message.content);
 });
 
-app.post("/", async (req, res) => {
-  console.log(req.body);
-  await quotes.insertOne(req.body);
-  res.send("OK");
-});
+// app.post("/", async (req, res) => {
+//   console.log(req.body);
+//   await quotes.insertOne(req.body);
+//   res.send("OK");
+// });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

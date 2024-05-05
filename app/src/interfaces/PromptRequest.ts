@@ -1,6 +1,6 @@
 interface PromptRequest {
     text: string;
     language: string;
-    style: string;
+    difficulty: string;
     length: string;
   }
