@@ -1,5 +1,5 @@
-import { Component, useEffect, useState } from "react";
-import { useClickAway } from "@uidotdev/usehooks";
+import { useRef, useEffect, useState } from "react";
+import { useClickAway } from "ahooks";
 import unvalidKey from "../lib/unvalidKey";
 
 interface Props {
@@ -34,9 +34,10 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
     return;
   }, [isSelected]);
 
-  const ref = useClickAway(() => {
+  const ref = useRef<HTMLDivElement>(null);
+  useClickAway(() => {
     setIsSelected(false);
-  });
+  }, ref);
 
   useEffect(() => {
     setCurrentCharId(0);
@@ -151,8 +152,8 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
 
   return (
     <div
-      id="textbox"
       ref={ref}
+      id="textbox"
       className="textbox"
       onClick={() => setIsSelected(true)}
     >

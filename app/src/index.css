@@ -7,9 +7,8 @@ body {
     background-color: rgb(226 232 240);
 }
 
-.courgette-regular {
-    font-family: "Courgette", cursive;
-    font-weight: 400;
+.bebas-neue-regular {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 500;
     font-style: normal;
-  }
-  
+}

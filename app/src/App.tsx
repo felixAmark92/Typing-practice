@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TypingBox from "./components/TypingBox";
 import "./styles/typing-box.css";
 import "./index.css";

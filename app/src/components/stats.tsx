@@ -1,4 +1,3 @@
-import React from "react";
 import Stat from "./stat";
 import ErrorStat from "./ErrorStats";
 
