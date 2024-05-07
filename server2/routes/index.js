@@ -1,16 +1,10 @@
-var OpenAI = require("openai");
-var bodyParser = require("body-parser");
-var cors = require("cors");
 var express = require("express");
+var OpenAI = require("openai");
+var router = express.Router();
 
-var app = express();
-
-app.use(cors());
 const openai = new OpenAI();
 
-app.use(bodyParser.json());
-
-app.use((req, res, next) => {
+router.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Origin",
     "http://localhost:5173",
@@ -23,11 +17,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", function (req, res) {
-  res.send("Hello world");
+/* GET home page. */
+router.get("/", function (req, res, next) {
+  res.render("index", { title: "Express" });
 });
 
-app.post("/chatgtp", async (req, res) => {
+router.post("/chatgtp", async (req, res) => {
   const prompt = await openai.chat.completions.create({
     messages: [
       {
@@ -41,4 +36,4 @@ app.post("/chatgtp", async (req, res) => {
   res.send(prompt.choices[0].message.content);
 });
 
-module.exports = app;
+module.exports = router;
