@@ -53,7 +53,7 @@ app.post("/chatgtp", async (req, res) => {
 
   console.log(prompt.choices[0]);
 
-  res.send(prompt.choices[0].message.content);
+  res.sendStatus(200, prompt.choices[0].message.content);
 });
 
 // app.post("/", async (req, res) => {
