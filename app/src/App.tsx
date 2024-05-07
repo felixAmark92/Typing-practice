@@ -21,13 +21,16 @@ const App = () => {
       setResult({ wpm: "-", errors: "-", finalScore: "-" });
       setQuote("");
       setDisableGenerateBtn(true);
-      const response = await fetch("http://localhost:3000/chatgtp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(req),
-      });
+      const response = await fetch(
+        "typing-practice-server.azurewebsites.net/chatgtp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(req),
+        }
+      );
       const data = await response.text();
       console.log(data);
       setQuote(data);
