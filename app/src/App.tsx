@@ -22,7 +22,7 @@ const App = () => {
       setQuote("");
       setDisableGenerateBtn(true);
       const response = await fetch(
-        "typing-practice-server.azurewebsites.net/chatgtp",
+        "https://typing-practice-server.azurewebsites.net/chatgtp",
         {
           method: "POST",
           headers: {
