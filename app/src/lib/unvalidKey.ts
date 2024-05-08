@@ -4,7 +4,8 @@ let unvalidKey = (key: string)=> {
     return(
         key === "Dead"  ||
         key === "Shift" ||
-        key === "CapsLock"
+        key === "CapsLock" ||
+        key === "Alt"
     ) 
 
 }
