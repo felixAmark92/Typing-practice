@@ -22,16 +22,17 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
 
   useEffect(() => {
     const textbox = document.getElementById("textbox");
+    const curChar = document.getElementById(curCharId.toString());
 
     if (isSelected) {
+      curChar?.classList.add("current");
       textbox?.classList.remove("textbox-unselected");
       textbox?.classList.add("textbox-selected");
-    } else {
-      textbox?.classList.remove("textbox-selected");
-      textbox?.classList.add("textbox-unselected");
+      return;
     }
-
-    return;
+    curChar?.classList.remove("current");
+    textbox?.classList.remove("textbox-selected");
+    textbox?.classList.add("textbox-unselected");
   }, [isSelected]);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -56,7 +57,9 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
       char?.classList.remove("current");
     }
     const first = document.getElementById((0).toString());
-    first?.classList.add("currenth");
+    if (isSelected) {
+      first?.classList.add("current");
+    }
 
     return;
   }, [quote]);
