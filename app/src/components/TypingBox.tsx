@@ -21,6 +21,13 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
   const [errors, setErrors] = useState(0);
 
   useEffect(() => {
+    const first = document.getElementById(curCharId.toString());
+    if (isSelected) {
+      first?.classList.add("current");
+    }
+  });
+
+  useEffect(() => {
     const textbox = document.getElementById("textbox");
     const curChar = document.getElementById(curCharId.toString());
 
@@ -49,18 +56,6 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
     setMinuteDecimal(0);
     setStart(Date.now());
     setErrors(0);
-
-    for (let i = 0; i < text.length; i++) {
-      const char = document.getElementById(i.toString());
-      char?.classList.remove("success");
-      char?.classList.remove("failure");
-      char?.classList.remove("current");
-    }
-    const first = document.getElementById((0).toString());
-    if (isSelected) {
-      first?.classList.add("current");
-    }
-
     return;
   }, [quote]);
 
@@ -105,6 +100,10 @@ const TypingBox = ({ onIsDone, quote, isSelected, setIsSelected }: Props) => {
       }
 
       if (key == "Backspace") {
+        if (curCharId == 0) {
+          return;
+        }
+
         curChar.classList.remove("current");
         const prevChar = document.getElementById((curCharId - 1).toString());
         prevChar?.classList.add("current");

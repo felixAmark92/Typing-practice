@@ -5,9 +5,12 @@ import "./index.css";
 import PromptForm from "./components/PromptForm";
 import Navbar from "./components/Navbar";
 import Stats from "./components/stats";
+import Footer from "./components/Footer";
 
 const App = () => {
-  const [quote, setQuote] = useState("This is a basic text");
+  const [quote, setQuote] = useState(
+    "Type into the request box to the left to get custom AI generated text"
+  );
   const [isSelected, setIsSelected] = useState(false);
   const [disableGenerateBtn, setDisableGenerateBtn] = useState(false);
   const [result, setResult] = useState<TypingResult>({
@@ -54,6 +57,14 @@ const App = () => {
 
         <div className="col-span-3 bg-gray-200 h-5/6">
           <div className="mx-auto w-2/3 mt-20">
+            <p className="text-4xl text-slate-600 bebas-neue-regular font-bold mb-6">
+              GPT Typing practice
+            </p>
+            <p className=" text-slate-600">
+              Practice typing AI Generated texts to stimulate your mind while
+              exercising your fingers! Learn to type faster in your own language
+              and with texts that suits your needs.
+            </p>
             <Stats result={result} />
             <TypingBox
               isSelected={isSelected}
@@ -66,6 +77,7 @@ const App = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
